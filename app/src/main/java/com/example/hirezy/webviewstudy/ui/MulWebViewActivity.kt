@@ -42,7 +42,7 @@ import java.lang.Exception
  *
  * @author hirezy
  */
-class ByWebViewActivity : AppCompatActivity() {
+class MulWebViewActivity : AppCompatActivity() {
     // 网页链接
     private var mState = 0
     private var mUrl: String? = null
@@ -131,7 +131,7 @@ class ByWebViewActivity : AppCompatActivity() {
         override fun isOpenThirdApp(url: String): Boolean {
             // 处理三方链接
             Log.e("---url", url)
-            return handleThirdApp(this@ByWebViewActivity, url)
+            return handleThirdApp(this@MulWebViewActivity, url)
         }
     }
 
@@ -145,13 +145,13 @@ class ByWebViewActivity : AppCompatActivity() {
             android.R.id.home -> handleFinish()
             R.id.actionbar_share -> {
                 val shareText = webView!!.title + webView!!.url
-                WebTools.share(this@ByWebViewActivity, shareText)
+                WebTools.share(this@MulWebViewActivity, shareText)
             }
             R.id.actionbar_cope -> {
                 WebTools.copy(webView!!.url)
                 Toast.makeText(this, "复制成功", Toast.LENGTH_LONG).show()
             }
-            R.id.actionbar_open -> WebTools.openLink(this@ByWebViewActivity, webView!!.url)
+            R.id.actionbar_open -> WebTools.openLink(this@MulWebViewActivity, webView!!.url)
             R.id.actionbar_webview_refresh -> mulWebView!!.reload()
             else -> {
             }
@@ -298,7 +298,7 @@ class ByWebViewActivity : AppCompatActivity() {
          * @param state    类型
          */
         fun loadUrl(mContext: Context, url: String?, title: String?, state: Int) {
-            val intent = Intent(mContext, ByWebViewActivity::class.java)
+            val intent = Intent(mContext, MulWebViewActivity::class.java)
             intent.putExtra("url", url)
             intent.putExtra("state", state)
             intent.putExtra("title", title ?: "加载中...")

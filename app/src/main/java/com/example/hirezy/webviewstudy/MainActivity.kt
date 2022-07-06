@@ -8,7 +8,7 @@ import com.example.hirezy.webviewstudy.utils.StatusBarUtil
 import androidx.core.content.ContextCompat
 import android.widget.Toast
 import android.content.Intent
-import com.example.hirezy.webviewstudy.ui.ByWebViewActivity
+import com.example.hirezy.webviewstudy.ui.MulWebViewActivity
 import com.example.hirezy.webviewstudy.ui.CoordinatorWebActivity
 import android.content.Context
 import com.example.hirezy.webviewstudy.tencentx5.X5WebViewActivity
@@ -161,7 +161,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     private fun loadUrl(mUrl: String, mTitle: String) {
         if (rbSystem!!.isChecked) {
 //            WebViewActivity.loadUrl(this, mUrl, mTitle);
-            ByWebViewActivity.loadUrl(this, mUrl, mTitle, state)
+            MulWebViewActivity.loadUrl(this, mUrl, mTitle, state)
         } else {
             X5WebViewActivity.loadUrl(this, mUrl, mTitle)
         }

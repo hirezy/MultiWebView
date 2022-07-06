@@ -75,7 +75,7 @@
             android:required="false" />
 
         <activity
-            android:name=".ui.ByWebViewActivity"
+            android:name=".ui.MulWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"

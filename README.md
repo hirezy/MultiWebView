@@ -168,6 +168,16 @@ mulWebView = MulWebView
         .loadUrl(mUrl);
 ```
 
+### 在线加载远程PDF
+ - 引用assets下pdf.js文件到自己项目下assets目录中,可以拷贝整个assets自己按照需求修改
+ - 加载远程PDF的url,方法如下:
+```java
+        //先判断url是否结尾是否包含.pdf,如果有拼接如下
+        //file:///android_asset/pdf/web/viewer.html?file=isPdfUrl
+        if(isPdfUrl!!.endsWith(".pdf",true)){
+          isPdfUrl="file:///android_asset/pdf/web/viewer.html?file=$isPdfUrl"
+        }
+```
 ## Document
 
  - [Android 关于WebView全方面的使用（项目应用篇）](http://www.jianshu.com/p/163d39e562f0)
