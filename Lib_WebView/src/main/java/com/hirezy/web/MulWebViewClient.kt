@@ -17,10 +17,10 @@ import java.lang.ref.WeakReference
  * - 添加javascript监听
  * - 唤起京东，支付宝，微信原生App
  */
-class ByWebViewClient internal constructor(activity: Activity, byWebView: ByWebView) :
+class MulWebViewClient internal constructor(activity: Activity, mulWebView: MulWebView) :
     WebViewClient() {
     private var mActivityWeakReference: WeakReference<Activity>? = null
-    private val mByWebView: ByWebView
+    private val mMulWebView: MulWebView
     private var onByWebClientCallback: OnByWebClientCallback? = null
     fun setOnByWebClientCallback(onByWebClientCallback: OnByWebClientCallback?) {
         this.onByWebClientCallback = onByWebClientCallback
@@ -37,7 +37,7 @@ class ByWebViewClient internal constructor(activity: Activity, byWebView: ByWebV
         } else {
             val mActivity = mActivityWeakReference!!.get()
             if (mActivity != null && !mActivity.isFinishing) {
-                ByWebTools.handleThirdApp(mActivity, url)
+                MulWebTools.handleThirdApp(mActivity, url)
             } else {
                 !url.startsWith("http:") && !url.startsWith("https:")
             }
@@ -53,7 +53,7 @@ class ByWebViewClient internal constructor(activity: Activity, byWebView: ByWebV
         } else {
             val mActivity = mActivityWeakReference!!.get()
             if (mActivity != null && !mActivity.isFinishing) {
-                ByWebTools.handleThirdApp(mActivity, url)
+                MulWebTools.handleThirdApp(mActivity, url)
             } else {
                 !url.startsWith("http:") && !url.startsWith("https:")
             }
@@ -71,9 +71,9 @@ class ByWebViewClient internal constructor(activity: Activity, byWebView: ByWebV
         // html加载完成之后，添加监听图片的点击js函数
         val mActivity = mActivityWeakReference!!.get()
         if (mActivity != null && !mActivity.isFinishing
-            && !ByWebTools.isNetworkConnected(mActivity) && mByWebView.progressBar != null
+            && !MulWebTools.isNetworkConnected(mActivity) && mMulWebView.progressBar != null
         ) {
-            mByWebView.progressBar!!.hide()
+            mMulWebView.progressBar!!.hide()
         }
         if (onByWebClientCallback != null) {
             onByWebClientCallback!!.onPageFinished(view, url)
@@ -92,7 +92,7 @@ class ByWebViewClient internal constructor(activity: Activity, byWebView: ByWebV
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return
         }
-        mByWebView.showErrorView()
+        mMulWebView.showErrorView()
     }
 
     override fun onReceivedHttpError(
@@ -105,7 +105,7 @@ class ByWebViewClient internal constructor(activity: Activity, byWebView: ByWebV
 //        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 //            int statusCode = errorResponse.getStatusCode();
 //            if (404 == statusCode || 500 == statusCode) {
-//                mByWebView.showErrorView();
+//                mMulWebView.showErrorView();
 //            }
 //        }
     }
@@ -119,7 +119,7 @@ class ByWebViewClient internal constructor(activity: Activity, byWebView: ByWebV
         super.onReceivedError(view, request, error)
         if (request.isForMainFrame) {
             // 是否是为 main frame创建
-            mByWebView.showErrorView()
+            mMulWebView.showErrorView()
         }
     }
 
@@ -157,6 +157,6 @@ class ByWebViewClient internal constructor(activity: Activity, byWebView: ByWebV
 
     init {
         mActivityWeakReference = WeakReference(activity)
-        mByWebView = byWebView
+        mMulWebView = mulWebView
     }
 }

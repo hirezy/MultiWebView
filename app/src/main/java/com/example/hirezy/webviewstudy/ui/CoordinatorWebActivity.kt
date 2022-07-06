@@ -1,6 +1,6 @@
 package com.example.hirezy.webviewstudy.ui
-import com.hirezy.web.ByWebView.Companion.with
-import com.hirezy.web.ByWebTools.handleThirdApp
+import com.hirezy.web.MulWebView.Companion.with
+import com.hirezy.web.MulWebTools.handleThirdApp
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.os.Bundle
@@ -12,7 +12,7 @@ import android.widget.Toast
 import com.example.hirezy.webviewstudy.config.MyJavascriptInterface
 import android.content.Intent
 import com.example.hirezy.webviewstudy.MainActivity
-import com.hirezy.web.ByWebView
+import com.hirezy.web.MulWebView
 import com.hirezy.web.OnTitleProgressCallback
 import com.hirezy.web.OnByWebClientCallback
 import androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -35,7 +35,7 @@ class CoordinatorWebActivity : AppCompatActivity() {
     private var mUrl: String? = null
     private var mTitle: String? = null
     private var webView: WebView? = null
-    private var byWebView: ByWebView? = null
+    private var mulWebView: MulWebView? = null
     private var tvGunTitle: TextView? = null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +60,7 @@ class CoordinatorWebActivity : AppCompatActivity() {
         // 设置behavior属性 和 ToolBar属性里设置 layout_scrollFlags="scroll|enterAlways"
         lp.behavior = ScrollingViewBehavior()
         val nestedScrollWebView = NestedScrollWebView(this)
-        byWebView = with(this)
+        mulWebView = with(this)
             .setWebParent(container, 1, lp)
             .setCustomWebView(nestedScrollWebView) // 设置自定义WebView
             .useWebProgress(ContextCompat.getColor(this, R.color.coloRed))
@@ -68,7 +68,7 @@ class CoordinatorWebActivity : AppCompatActivity() {
             .setOnByWebClientCallback(onByWebClientCallback)
             .addJavascriptInterface("injectedObject", MyJavascriptInterface(this))
             .loadUrl(mUrl!!)
-        webView = byWebView!!.webView
+        webView = mulWebView!!.webView
     }
 
     private fun initToolBar() {
@@ -126,7 +126,7 @@ class CoordinatorWebActivity : AppCompatActivity() {
                 Toast.makeText(this, "复制成功", Toast.LENGTH_LONG).show()
             }
             R.id.actionbar_open -> WebTools.openLink(this@CoordinatorWebActivity, webView!!.url)
-            R.id.actionbar_webview_refresh -> byWebView!!.reload()
+            R.id.actionbar_webview_refresh -> mulWebView!!.reload()
             else -> {
             }
         }
@@ -138,7 +138,7 @@ class CoordinatorWebActivity : AppCompatActivity() {
      * 这段js函数的功能就是，遍历所有的img节点，并添加onclick函数，函数的功能是在图片点击的时候调用本地java接口并传递url过去
      */
     private fun loadImageClickJs() {
-        byWebView!!.loadJsHolder.loadJs(
+        mulWebView!!.loadJsHolder.loadJs(
             "javascript:(function(){" +
                     "var objs = document.getElementsByTagName(\"img\");" +
                     "for(var i=0;i<objs.length;i++)" +
@@ -154,7 +154,7 @@ class CoordinatorWebActivity : AppCompatActivity() {
      * 遍历所有的 * 节点,将节点里的属性传递过去(属性自定义,用于页面跳转)
      */
     private fun loadTextClickJs() {
-        byWebView!!.loadJsHolder.loadJs(
+        mulWebView!!.loadJsHolder.loadJs(
             "javascript:(function(){" +
                     "var objs =document.getElementsByTagName(\"li\");" +
                     "for(var i=0;i<objs.length;i++)" +
@@ -171,9 +171,9 @@ class CoordinatorWebActivity : AppCompatActivity() {
      */
     private fun loadCallJs() {
         // 无参数调用
-        byWebView!!.loadJsHolder.quickCallJs("javacalljs")
+        mulWebView!!.loadJsHolder.quickCallJs("javacalljs")
         // 传递参数调用
-        byWebView!!.loadJsHolder.quickCallJs("javacalljswithargs", "android传入到网页里的数据，有参")
+        mulWebView!!.loadJsHolder.quickCallJs("javacalljswithargs", "android传入到网页里的数据，有参")
     }
 
     /**
@@ -181,14 +181,14 @@ class CoordinatorWebActivity : AppCompatActivity() {
      * 获取网页源码
      */
     private fun loadWebsiteSourceCodeJs() {
-        byWebView!!.loadJsHolder.loadJs("javascript:window.injectedObject.showSource(document.getElementsByTagName('html')[0].innerHTML);")
+        mulWebView!!.loadJsHolder.loadJs("javascript:window.injectedObject.showSource(document.getElementsByTagName('html')[0].innerHTML);")
     }
 
     /**
      * 上传图片之后的回调
      */
     override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
-        byWebView!!.handleFileChooser(requestCode, resultCode, intent)
+        mulWebView!!.handleFileChooser(requestCode, resultCode, intent)
     }
 
     /**
@@ -236,7 +236,7 @@ class CoordinatorWebActivity : AppCompatActivity() {
     }
 
     override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
-        return if (byWebView!!.handleKeyEvent(keyCode, event)) {
+        return if (mulWebView!!.handleKeyEvent(keyCode, event)) {
             true
         } else {
             if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -248,16 +248,16 @@ class CoordinatorWebActivity : AppCompatActivity() {
 
     override fun onPause() {
         super.onPause()
-        byWebView!!.onPause()
+        mulWebView!!.onPause()
     }
 
     override fun onResume() {
         super.onResume()
-        byWebView!!.onResume()
+        mulWebView!!.onResume()
     }
 
     override fun onDestroy() {
-        byWebView!!.onDestroy()
+        mulWebView!!.onDestroy()
         super.onDestroy()
     }
 

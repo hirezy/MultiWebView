@@ -13,7 +13,7 @@ import java.lang.StringBuilder
 /**
  * Created by hirezy on 2020/7/4.
  */
-class ByLoadJsHolder internal constructor(private val mWebView: WebView?) {
+class MulLoadJsHolder internal constructor(private val mWebView: WebView?) {
     @JvmOverloads
     fun loadJs(js: String, callback: ValueCallback<String>? = null) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

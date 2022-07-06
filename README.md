@@ -1,4 +1,4 @@
-# ByWebView
+# MulWebView
 
 ## Features
 
@@ -9,7 +9,7 @@
  - 全屏播放网络视频
  - **与Js交互实例**
  - 优雅的进度条显示控件
-
+ - 支持在线加载远程PDF文件
 **Demo示例：**
 
  - DeepLink的基本使用
@@ -39,7 +39,7 @@ dependencies {
 
 ## Use
 ```java
-byWebView = ByWebView
+mulWebView = MulWebView
         .with(this)
         .setWebParent(container, new LinearLayout.LayoutParams(-1, -1))
         .useWebProgress(ContextCompat.getColor(this, R.color.coloRed))
@@ -51,14 +51,14 @@ byWebView = ByWebView
 
 ```java
 // 无参数调用
-byWebView.getLoadJsHolder().quickCallJs("javacalljs");
+mulWebView.getLoadJsHolder().quickCallJs("javacalljs");
 // 传递参数调用
-byWebView.getLoadJsHolder().quickCallJs("javacalljswithargs", "android传入到网页里的数据，有参");
+mulWebView.getLoadJsHolder().quickCallJs("javacalljswithargs", "android传入到网页里的数据,有参");
 ```
  - Js调用Java方法：
 
 ```java
-ByWebView.with(this)
+MulWebView.with(this)
 	.addJavascriptInterface("injectedObject", new MyJavascriptInterface(this))
 	.loadUrl(mUrl);
 window.injectedObject.startFunction()
@@ -69,18 +69,18 @@ window.injectedObject.startFunction()
 @Override
 protected void onPause() {
     super.onPause();
-    byWebView.onPause();
+    mulWebView.onPause();
 }
 
 @Override
 protected void onResume() {
     super.onResume();
-    byWebView.onResume();
+    mulWebView.onResume();
 }
 
 @Override
 protected void onDestroy() {
-    byWebView.onDestroy();
+    mulWebView.onDestroy();
     super.onDestroy();
 }
 ```
@@ -89,7 +89,7 @@ protected void onDestroy() {
 ```java
 @Override
 public boolean onKeyDown(int keyCode, KeyEvent event) {
-    if (byWebView.handleKeyEvent(keyCode, event)) {
+    if (mulWebView.handleKeyEvent(keyCode, event)) {
         return true;
     } else {
         return super.onKeyDown(keyCode, event);
@@ -101,13 +101,13 @@ public boolean onKeyDown(int keyCode, KeyEvent event) {
 ```java
 @Override
 protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
-    byWebView.handleFileChooser(requestCode, resultCode, intent);
+    mulWebView.handleFileChooser(requestCode, resultCode, intent);
 }
 ```
 
 ### 监听 标题、进度条、WebViewClient
 ```java
-byWebView = ByWebView
+mulWebView = MulWebView
         .with(this)
         .setWebParent(container, new LinearLayout.LayoutParams(-1, -1))
         .useWebProgress(ContextCompat.getColor(this, R.color.coloRed))
@@ -149,14 +149,14 @@ private OnByWebClientCallback onByWebClientCallback = new OnByWebClientCallback(
 ### 自定义错误页面
 
 ```java
-ByWebView.with(this)
+MulWebView.with(this)
 	.setErrorLayout(R.layout.by_load_url_error,"无法打开网页")
 	.loadUrl(mUrl);
 ```
 
 ### 完整设置
 ```java
-byWebView = ByWebView
+mulWebView = MulWebView
         .with(this)
         .useWebProgress(true) // 是否使用进度条，默认true，如使用可不用配置
         .setWebParent(container, new LinearLayout.LayoutParams(-1, -1)) // 设置WebView父容器
@@ -179,8 +179,8 @@ byWebView = ByWebView
 ## Screenshots
  
  <img width="260" height=“374” src="https://github.com/hirezy/MultiWebView/blob/master/art/view_00.png"></img>
- <img width="260" height=“374” src="https://github.com/hirezy/MultiWebView/blob/master/art/电话短信邮件测试.png"></img>
- <img width="260" height=“374” src="https://github.com/hirezy/MultiWebView/blob/master/art/上传图片.png"></img>
+ <img width="260" height=“374” src="https://github.com/hirezy/MultiWebView/blob/master/art/phone_msg.jpg"></img>
+ <img width="260" height=“374” src="https://github.com/hirezy/MultiWebView/blob/master/art/uploadimg.jpg"></img>
 
 
  

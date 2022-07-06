@@ -1,43 +1,12 @@
 package com.hirezy.web
 
 import android.widget.FrameLayout
-import kotlin.jvm.JvmOverloads
 import android.os.Build
-import androidx.annotation.RequiresApi
-import com.hirezy.web.ByLoadJsHolder
 import android.text.TextUtils
-import org.json.JSONArray
-import org.json.JSONObject
-import org.json.JSONException
 import android.app.Activity
-import com.hirezy.web.ByWebView
-import com.hirezy.web.ByFullscreenHolder
-import com.hirezy.web.OnTitleProgressCallback
 import android.annotation.SuppressLint
-import android.content.pm.ActivityInfo
-import com.hirezy.web.R
 import android.content.Intent
-import com.hirezy.web.ByWebChromeClient
-import android.webkit.PermissionRequest
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.content.pm.PackageManager
-import com.hirezy.web.ByWebTools
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
-import com.hirezy.web.OnByWebClientCallback
 import androidx.annotation.LayoutRes
-import com.hirezy.web.ByWebViewClient
-import android.content.DialogInterface
-import android.graphics.Shader
-import android.view.View.MeasureSpec
-import android.animation.ValueAnimator
-import android.view.animation.LinearInterpolator
-import android.view.animation.DecelerateInterpolator
-import android.animation.ObjectAnimator
-import android.animation.AnimatorSet
-import android.animation.ValueAnimator.AnimatorUpdateListener
-import android.animation.AnimatorListenerAdapter
 import android.view.*
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -57,7 +26,7 @@ import java.lang.NullPointerException
  * - 前端代码嵌入js(缺乏灵活性)
  * - 网页自带js跳转
  */
-class ByWebView private constructor(builder: Builder) {
+class MulWebView private constructor(builder: Builder) {
     private var mWebView: WebView? = null
     var progressBar: WebProgress? = null
         private set
@@ -66,8 +35,8 @@ class ByWebView private constructor(builder: Builder) {
     private val mErrorLayoutId: Int
     val errorTitle: String? = builder.mErrorTitle
     private val activity: Activity = builder.mActivity
-    private val mWebChromeClient: ByWebChromeClient?
-    private var byLoadJsHolder: ByLoadJsHolder? = null
+    private val mWebChromeClient: MulWebChromeClient?
+    private var mulLoadJsHolder: MulLoadJsHolder? = null
     @SuppressLint("JavascriptInterface", "AddJavascriptInterface")
     private fun handleJsInterface(builder: Builder) {
         if (!TextUtils.isEmpty(builder.mInterfaceName) && builder.mInterfaceObj != null) {
@@ -75,12 +44,12 @@ class ByWebView private constructor(builder: Builder) {
         }
     }
 
-    val loadJsHolder: ByLoadJsHolder
+    val loadJsHolder: MulLoadJsHolder
         get() {
-            if (byLoadJsHolder == null) {
-                byLoadJsHolder = ByLoadJsHolder(mWebView)
+            if (mulLoadJsHolder == null) {
+                mulLoadJsHolder = MulLoadJsHolder(mWebView)
             }
-            return byLoadJsHolder!!
+            return mulLoadJsHolder!!
         }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -156,14 +125,14 @@ class ByWebView private constructor(builder: Builder) {
                     builder.mProgressStartColorString
                 )
             }
-            var progressHeight = ByWebTools.dip2px(
+            var progressHeight = MulWebTools.dip2px(
                 parentLayout.context,
                 WebProgress.Companion.WEB_PROGRESS_DEFAULT_HEIGHT.toFloat()
             )
             if (builder.mProgressHeightDp != 0) {
                 progressBar!!.height = builder.mProgressHeightDp
                 progressHeight =
-                    ByWebTools.dip2px(parentLayout.context, builder.mProgressHeightDp.toFloat())
+                    MulWebTools.dip2px(parentLayout.context, builder.mProgressHeightDp.toFloat())
             }
             progressBar!!.visibility = View.GONE
             parentLayout.addView(
@@ -175,7 +144,7 @@ class ByWebView private constructor(builder: Builder) {
 
     fun loadUrl(url: String) {
         if (!TextUtils.isEmpty(url) && url.endsWith("mp4") && Build.VERSION.SDK_INT <= Build.VERSION_CODES.LOLLIPOP_MR1) {
-            mWebView!!.loadData(ByWebTools.getVideoHtmlBody(url), "text/html", "UTF-8")
+            mWebView!!.loadData(MulWebTools.getVideoHtmlBody(url), "text/html", "UTF-8")
         } else {
             mWebView!!.loadUrl(url)
         }
@@ -462,14 +431,14 @@ class ByWebView private constructor(builder: Builder) {
         /**
          * 直接获取ByWebView，避免一定要调用loadUrl()才能获取ByWebView的情况
          */
-        fun get(): ByWebView {
-            return ByWebView(this)
+        fun get(): MulWebView {
+            return MulWebView(this)
         }
 
         /**
          * loadUrl()并获取ByWebView
          */
-        fun loadUrl(url: String): ByWebView {
+        fun loadUrl(url: String): MulWebView {
             val byWebView = get()
             byWebView.loadUrl(url)
             return byWebView
@@ -508,12 +477,12 @@ class ByWebView private constructor(builder: Builder) {
         // 配置
         handleSetting()
         // 视频、照片、进度条
-        mWebChromeClient = ByWebChromeClient(activity, this)
+        mWebChromeClient = MulWebChromeClient(activity, this)
         mWebChromeClient.setOnByWebChromeCallback(builder.mOnTitleProgressCallback)
         mWebView!!.webChromeClient = mWebChromeClient
 
         // 错误页面、页面结束、处理DeepLink
-        val mByWebViewClient = ByWebViewClient(activity, this)
+        val mByWebViewClient = MulWebViewClient(activity, this)
         mByWebViewClient.setOnByWebClientCallback(builder.mOnByWebClientCallback)
         mWebView!!.webViewClient = mByWebViewClient
         handleJsInterface(builder)

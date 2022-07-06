@@ -1,46 +1,17 @@
 package com.hirezy.web
 
 import android.widget.FrameLayout
-import android.view.MotionEvent
-import kotlin.jvm.JvmOverloads
 import android.os.Build
 import androidx.annotation.RequiresApi
-import com.hirezy.web.ByLoadJsHolder
 import android.text.TextUtils
-import org.json.JSONArray
-import org.json.JSONObject
-import org.json.JSONException
 import android.app.Activity
-import com.hirezy.web.ByWebView
-import com.hirezy.web.ByFullscreenHolder
-import com.hirezy.web.OnTitleProgressCallback
 import android.annotation.SuppressLint
 import android.content.pm.ActivityInfo
 import android.view.LayoutInflater
-import com.hirezy.web.R
 import android.content.Intent
-import com.hirezy.web.ByWebChromeClient
 import android.webkit.PermissionRequest
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
-import android.content.pm.PackageManager
-import com.hirezy.web.ByWebTools
-import android.net.ConnectivityManager
-import android.net.NetworkInfo
-import android.view.ViewGroup
-import com.hirezy.web.OnByWebClientCallback
-import androidx.annotation.LayoutRes
-import com.hirezy.web.ByWebViewClient
-import android.content.DialogInterface
-import android.graphics.Shader
-import android.view.View.MeasureSpec
-import android.animation.ValueAnimator
-import android.view.animation.LinearInterpolator
-import android.view.animation.DecelerateInterpolator
-import android.animation.ObjectAnimator
-import android.animation.AnimatorSet
-import android.animation.ValueAnimator.AnimatorUpdateListener
-import android.animation.AnimatorListenerAdapter
 import android.net.Uri
 import android.view.View
 import android.webkit.ValueCallback
@@ -53,16 +24,16 @@ import java.lang.ref.WeakReference
  * - 播放网络视频配置
  * - 上传图片(兼容)
  */
-class ByWebChromeClient internal constructor(activity: Activity, byWebView: ByWebView) :
+class MulWebChromeClient internal constructor(activity: Activity, mulWebView: MulWebView) :
     WebChromeClient() {
     private var mActivityWeakReference: WeakReference<Activity>? = null
-    private val mByWebView: ByWebView
+    private val mMulWebView: MulWebView
     private var mUploadMessage: ValueCallback<Uri?>? = null
     private var mUploadMessageForAndroid5: ValueCallback<Array<Uri>>? = null
     private var mProgressVideo: View? = null
     private var mCustomView: View? = null
     private var mCustomViewCallback: CustomViewCallback? = null
-    var videoFullView: ByFullscreenHolder? = null
+    var videoFullView: MulFullscreenHolder? = null
         private set
     private var onByWebChromeCallback: OnTitleProgressCallback? = null
 
@@ -93,7 +64,7 @@ class ByWebChromeClient internal constructor(activity: Activity, byWebView: ByWe
             if (!isFixScreenLandscape) {
                 mActivity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE
             }
-            mByWebView.webView?.visibility = View.INVISIBLE
+            mMulWebView.webView?.visibility = View.INVISIBLE
 
             // 如果一个视图已经存在，那么立刻终止并新建一个
             if (mCustomView != null) {
@@ -101,7 +72,7 @@ class ByWebChromeClient internal constructor(activity: Activity, byWebView: ByWe
                 return
             }
             val decor = mActivity.window.decorView as FrameLayout
-            videoFullView = ByFullscreenHolder(mActivity)
+            videoFullView = MulFullscreenHolder(mActivity)
             videoFullView!!.addView(view)
             decor.addView(videoFullView)
             mCustomView = view
@@ -132,7 +103,7 @@ class ByWebChromeClient internal constructor(activity: Activity, byWebView: ByWe
             }
             mCustomView = null
             mCustomViewCallback!!.onCustomViewHidden()
-            mByWebView.webView?.visibility = View.VISIBLE
+            mMulWebView.webView?.visibility = View.VISIBLE
         }
     }
 
@@ -141,7 +112,7 @@ class ByWebChromeClient internal constructor(activity: Activity, byWebView: ByWe
      */
     override fun getVideoLoadingProgressView(): View? {
         if (mProgressVideo == null) {
-            mProgressVideo = LayoutInflater.from(mByWebView.webView?.context)
+            mProgressVideo = LayoutInflater.from(mMulWebView.webView?.context)
                 .inflate(R.layout.by_video_loading_progress, null)
         }
         return mProgressVideo
@@ -150,14 +121,14 @@ class ByWebChromeClient internal constructor(activity: Activity, byWebView: ByWe
     override fun onProgressChanged(view: WebView, newProgress: Int) {
         super.onProgressChanged(view, newProgress)
         // 进度条
-        if (mByWebView.progressBar != null) {
-            mByWebView.progressBar?.setWebProgress(newProgress)
+        if (mMulWebView.progressBar != null) {
+            mMulWebView.progressBar?.setWebProgress(newProgress)
         }
         // 当显示错误页面时，进度达到100才显示网页
-        if (mByWebView.webView != null && mByWebView.webView!!.visibility == View.INVISIBLE && (mByWebView.errorView == null || mByWebView.errorView!!.visibility == View.GONE)
+        if (mMulWebView.webView != null && mMulWebView.webView!!.visibility == View.INVISIBLE && (mMulWebView.errorView == null || mMulWebView.errorView!!.visibility == View.GONE)
             && newProgress == 100
         ) {
-            mByWebView.webView!!.visibility = View.VISIBLE
+            mMulWebView.webView!!.visibility = View.VISIBLE
         }
         if (onByWebChromeCallback != null) {
             onByWebChromeCallback!!.onProgressChanged(newProgress)
@@ -175,8 +146,8 @@ class ByWebChromeClient internal constructor(activity: Activity, byWebView: ByWe
         super.onReceivedTitle(view, title)
         // 设置title
         if (onByWebChromeCallback != null) {
-            if (mByWebView.errorView != null && mByWebView.errorView!!.visibility == View.VISIBLE) {
-                onByWebChromeCallback!!.onReceivedTitle(if (TextUtils.isEmpty(mByWebView.errorTitle)) "网页无法打开" else mByWebView.errorTitle)
+            if (mMulWebView.errorView != null && mMulWebView.errorView!!.visibility == View.VISIBLE) {
+                onByWebChromeCallback!!.onReceivedTitle(if (TextUtils.isEmpty(mMulWebView.errorTitle)) "网页无法打开" else mMulWebView.errorTitle)
             } else {
                 onByWebChromeCallback!!.onReceivedTitle(title)
             }
@@ -284,7 +255,7 @@ class ByWebChromeClient internal constructor(activity: Activity, byWebView: ByWe
 
     override fun getDefaultVideoPoster(): Bitmap? {
         return if (super.getDefaultVideoPoster() == null) {
-            BitmapFactory.decodeResource(mByWebView.webView?.resources, R.drawable.by_icon_video)
+            BitmapFactory.decodeResource(mMulWebView.webView?.resources, R.drawable.by_icon_video)
         } else {
             super.getDefaultVideoPoster()
         }
@@ -297,6 +268,6 @@ class ByWebChromeClient internal constructor(activity: Activity, byWebView: ByWe
 
     init {
         mActivityWeakReference = WeakReference(activity)
-        mByWebView = byWebView
+        mMulWebView = mulWebView
     }
 }

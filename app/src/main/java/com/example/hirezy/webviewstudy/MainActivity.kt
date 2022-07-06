@@ -1,5 +1,5 @@
 package com.example.hirezy.webviewstudy
-import com.hirezy.web.ByWebTools.getUrl
+import com.hirezy.web.MulWebTools.getUrl
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.os.Bundle
@@ -130,7 +130,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         val url = getUrl(etSearch!!.text.toString().trim { it <= ' ' })
         loadUrl(
             if (!TextUtils.isEmpty(url)) url else "https://github.com/youlookwhat/ByWebView",
-            "ByWebView"
+            "MulWebView"
         )
     }
 
@@ -145,12 +145,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 state = 0
                 loadUrl(
                     "https://github.com/youlookwhat/download/raw/main/ByWebView.apk",
-                    "ByWebView.apk"
+                    "MulWebView.apk"
                 )
             }
             R.id.actionbar_about -> {
                 state = 0
-                loadUrl("https://github.com/youlookwhat/ByWebView", "ByWebView")
+                loadUrl("https://github.com/youlookwhat/ByWebView", "MulWebView")
             }
             else -> {
             }
