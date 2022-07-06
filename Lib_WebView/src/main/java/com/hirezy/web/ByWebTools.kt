@@ -1,0 +1,202 @@
+package com.hirezy.web
+
+import android.widget.FrameLayout
+import android.view.MotionEvent
+import kotlin.jvm.JvmOverloads
+import android.os.Build
+import androidx.annotation.RequiresApi
+import com.hirezy.web.ByLoadJsHolder
+import android.text.TextUtils
+import org.json.JSONArray
+import org.json.JSONObject
+import org.json.JSONException
+import android.app.Activity
+import com.hirezy.web.ByWebView
+import com.hirezy.web.ByFullscreenHolder
+import com.hirezy.web.OnTitleProgressCallback
+import android.annotation.SuppressLint
+import android.content.pm.ActivityInfo
+import android.view.LayoutInflater
+import com.hirezy.web.R
+import android.content.Intent
+import com.hirezy.web.ByWebChromeClient
+import android.webkit.PermissionRequest
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
+import android.content.pm.PackageManager
+import com.hirezy.web.ByWebTools
+import android.net.ConnectivityManager
+import android.net.NetworkInfo
+import android.view.ViewGroup
+import com.hirezy.web.OnByWebClientCallback
+import androidx.annotation.LayoutRes
+import com.hirezy.web.ByWebViewClient
+import android.content.DialogInterface
+import android.graphics.Shader
+import android.view.View.MeasureSpec
+import android.animation.ValueAnimator
+import android.view.animation.LinearInterpolator
+import android.view.animation.DecelerateInterpolator
+import android.animation.ObjectAnimator
+import android.animation.AnimatorSet
+import android.animation.ValueAnimator.AnimatorUpdateListener
+import android.animation.AnimatorListenerAdapter
+import android.content.Context
+import android.net.Uri
+import java.lang.Exception
+
+/**
+ * @author hirezy
+ */
+object ByWebTools {
+    /**
+     * 将 Android5.0以下手机不能直接打开mp4后缀的链接
+     *
+     * @param url 视频链接
+     */
+    fun getVideoHtmlBody(url: String): String {
+        return "<html>" +
+                "<head>" +
+                "<meta name=\"viewport\" content=\"width=device-width\">" +
+                "<style type=\"text/css\" abt=\"234\"></style>" +
+                "</head>" +
+                "<body>" +
+                "<video controls=\"\" autoplay=\"\" name=\"media\" style=\"display:block;width:100%;position:absolute;left:0;top:20%;\">" +
+                "<source src=\"" + url + "\" type=\"video/mp4\">" +
+                "</video>" +
+                "</body>" +
+                "</html>"
+    }
+
+    /**
+     * 通过包名找应用,不需要权限
+     */
+    fun hasPackage(context: Context?, packageName: String?): Boolean {
+        return if (null == context || TextUtils.isEmpty(packageName)) {
+            false
+        } else try {
+            context.packageManager.getPackageInfo(packageName, PackageManager.GET_GIDS)
+            true
+        } catch (e: PackageManager.NameNotFoundException) {
+            // 抛出找不到的异常，说明该程序已经被卸载
+            false
+        }
+    }
+
+    /**
+     * 默认处理流程：网页里可能唤起其他的app
+     */
+    @JvmStatic
+    fun handleThirdApp(activity: Activity, backUrl: String): Boolean {
+        /**http开头直接跳过 */
+        if (backUrl.startsWith("http")) {
+            // 可能有提示下载Apk文件
+            if (backUrl.contains(".apk")) {
+                startActivity(activity, backUrl)
+                return true
+            }
+            return false
+        }
+        if (backUrl.contains("alipays")) {
+            // 网页跳支付宝支付
+            if (hasPackage(activity, "com.eg.android.AlipayGphone")) {
+                startActivity(activity, backUrl)
+            }
+        } else if (backUrl.contains("weixin://wap/pay")) {
+            // 微信支付
+            if (hasPackage(activity, "com.tencent.mm")) {
+                startActivity(activity, backUrl)
+            }
+        } else {
+
+            // 会唤起手机里有的App，如果不想被唤起，复制出来然后添加屏蔽即可
+            var isJump = true
+            if (backUrl.contains("tbopen:") // 淘宝
+                || backUrl.contains("openapp.jdmobile:") // 京东
+                || backUrl.contains("jdmobile:") //京东
+                || backUrl.contains("zhihu:") // 知乎
+                || backUrl.contains("vipshop:") //
+                || backUrl.contains("youku:") //优酷
+                || backUrl.contains("uclink:") // UC
+                || backUrl.contains("ucbrowser:") // UC
+                || backUrl.contains("newsapp:") //
+                || backUrl.contains("sinaweibo:") // 新浪微博
+                || backUrl.contains("suning:") //
+                || backUrl.contains("pinduoduo:") // 拼多多
+                || backUrl.contains("qtt:") //
+                || backUrl.contains("baiduboxapp:") // 百度
+                || backUrl.contains("baiduhaokan:") // 百度看看
+            ) {
+                isJump = false
+            }
+            if (isJump) {
+                startActivity(activity, backUrl)
+            }
+        }
+        return true
+    }
+
+    private fun startActivity(context: Context, url: String) {
+        try {
+            val intent = Intent()
+            intent.action = "android.intent.action.VIEW"
+            intent.data = Uri.parse(url)
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch (e: Exception) {
+            if (BuildConfig.DEBUG) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    /**
+     * 判断网络是否连通
+     */
+    fun isNetworkConnected(context: Context?): Boolean {
+        return try {
+            if (context != null) {
+                val cm =
+                    context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                val info = cm.activeNetworkInfo
+                info != null && info.isConnected
+            } else {
+                /**如果context为空，就返回false，表示网络未连接 */
+                false
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    fun dip2px(context: Context, dpValue: Float): Int {
+        val scale = context.resources.displayMetrics.density
+        return (dpValue * scale + 0.5f).toInt()
+    }
+
+    @JvmStatic
+    fun getUrl(url: String): String {
+        var urlResult = ""
+        if (TextUtils.isEmpty(url)) {
+            // 空url
+            return urlResult
+        } else if (url.startsWith("http")) {
+            // 直接返回
+            return url
+        } else if (url.contains("http")) {
+            // 有http且不在头部
+            urlResult = url.substring(url.indexOf("http"))
+        } else if (url.startsWith("www")) {
+            // 以"www"开头
+            urlResult = "http://$url"
+        } else if (url.contains(".com") || url.contains(".com") || url.contains(".cn")) {
+            // 不以"http"开头且有后缀
+            urlResult = "http://www.$url"
+        } else if (!url.contains("www")) {
+            // 输入纯文字的情况
+            urlResult = "http://m5.baidu.com/s?from=124n&word=$url"
+        }
+        return urlResult
+    }
+}
