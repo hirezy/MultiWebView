@@ -113,7 +113,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
                 builder.setPositiveButton("去star") { dialog, which ->
                     state = 0
-                    loadUrl("https://github.com/youlookwhat/ByWebView", "ByWebView")
+                    loadUrl("https://github.com/hirezy/MultiWebView", "MultiWebView")
                 }
                 builder.show()
             }
