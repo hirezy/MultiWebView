@@ -32,7 +32,7 @@ allprojects {
 
  ```java
 dependencies {
-        implementation 'com.github.youlookwhat:ByWebView:1.1.6'
+        implementation 'com.github.hirezy:MultiWebView:1.0.0'
 }
 
  ```
@@ -141,7 +141,7 @@ private OnByWebClientCallback onByWebClientCallback = new OnByWebClientCallback(
     public boolean isOpenThirdApp(String url) {
         // 处理三方链接
         Log.e("---url", url);
-        return ByWebTools.handleThirdApp(ByWebViewActivity.this, url);
+        return MulWebTools.handleThirdApp(ByWebViewActivity.this, url);
     }
 };
 ```
