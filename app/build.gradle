@@ -22,19 +22,19 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
-    // 其他 webview
+
     signingConfigs {
         release {
-            storeFile file("./webview")
-            storePassword "webview2018"
+            storeFile file("./webview.jks")
+            storePassword "123456"
             keyAlias "webview"
-            keyPassword "webview2018"
+            keyPassword "123456"
         }
         debug {
-            storeFile file("./webview")
-            storePassword "webview2018"
+            storeFile file("./webview.jks")
+            storePassword "123456"
             keyAlias "webview"
-            keyPassword "webview2018"
+            keyPassword "123456"
         }
     }
 

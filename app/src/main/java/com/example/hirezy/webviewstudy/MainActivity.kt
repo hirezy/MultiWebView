@@ -129,7 +129,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         state = 0
         val url = getUrl(etSearch!!.text.toString().trim { it <= ' ' })
         loadUrl(
-            if (!TextUtils.isEmpty(url)) url else "https://github.com/youlookwhat/ByWebView",
+            if (!TextUtils.isEmpty(url)) url else "https://github.com/hirezy/MultiWebView",
             "MulWebView"
         )
     }
