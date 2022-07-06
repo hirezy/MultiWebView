@@ -181,6 +181,7 @@ mulWebView = MulWebView
  <img width="260" height=“374” src="https://github.com/hirezy/MultiWebView/blob/master/art/view_00.png"></img>
  <img width="260" height=“374” src="https://github.com/hirezy/MultiWebView/blob/master/art/phone_msg.jpg"></img>
  <img width="260" height=“374” src="https://github.com/hirezy/MultiWebView/blob/master/art/uploadimg.jpg"></img>
+ <img width="260" height=“374” src="https://github.com/hirezy/MultiWebView/blob/master/art/open_pdf.jpg"></img>
 
 
  
