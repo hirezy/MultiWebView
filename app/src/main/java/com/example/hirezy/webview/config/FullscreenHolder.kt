@@ -1,4 +1,4 @@
-package com.example.hirezy.webviewstudy.config
+package com.example.hirezy.webview.config
 
 import android.R
 import android.widget.FrameLayout

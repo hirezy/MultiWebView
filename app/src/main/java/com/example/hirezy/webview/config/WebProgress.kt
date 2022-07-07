@@ -1,4 +1,4 @@
-package com.example.hirezy.webviewstudy.config
+package com.example.hirezy.webview.config
 import android.animation.*
 import android.widget.FrameLayout
 import kotlin.jvm.JvmOverloads

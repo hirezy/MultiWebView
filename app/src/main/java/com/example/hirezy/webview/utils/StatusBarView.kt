@@ -1,4 +1,4 @@
-package com.example.hirezy.webviewstudy.utils
+package com.example.hirezy.webview.utils
 
 import android.content.Context
 import android.util.AttributeSet

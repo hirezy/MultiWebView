@@ -1,4 +1,4 @@
-package com.example.hirezy.webviewstudy.view
+package com.example.hirezy.webview.view
 import androidx.core.view.NestedScrollingChild
 import androidx.core.view.NestedScrollingChildHelper
 import android.view.MotionEvent

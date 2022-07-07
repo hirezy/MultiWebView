@@ -1,15 +1,15 @@
-package com.example.hirezy.webviewstudy.utils
-import com.example.hirezy.webviewstudy.R
+package com.example.hirezy.webview.utils
+import com.example.hirezy.webview.R
 import android.text.TextUtils
 import android.os.Build
 import android.widget.Toast
-import com.example.hirezy.webviewstudy.App
+import com.example.hirezy.webview.App
 import android.content.pm.PackageManager
 import android.app.Activity
 import android.content.*
 import android.net.Uri
 import android.util.Log
-import com.example.hirezy.webviewstudy.BuildConfig
+import com.example.hirezy.webview.BuildConfig
 import java.lang.Exception
 
 /**

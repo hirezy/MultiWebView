@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.hirezy.webviewstudy.ui.WebViewActivity">
+    tools:context="com.example.hirezy.webview.ui.WebViewActivity">
 
     <androidx.appcompat.widget.Toolbar xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/title_tool_bar"
@@ -40,7 +40,7 @@
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="match_parent" />-->
 
-        <!--<com.example.hirezy.webviewstudy.config.WebProgress-->
+        <!--<webviewig.WebProgress-->
             <!--android:id="@+id/pb_progress"-->
             <!--android:layout_width="match_parent"-->
             <!--android:layout_height="3dp"-->

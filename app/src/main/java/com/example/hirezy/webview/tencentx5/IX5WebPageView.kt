@@ -1,14 +1,13 @@
-package com.example.hirezy.webviewstudy.config
-
-import android.content.Intent
-import android.view.View
-import android.webkit.WebView
+package com.example.hirezy.webview.tencentx5
 import android.widget.FrameLayout
+import android.content.Intent
+import android.view.*
+import com.tencent.smtt.sdk.WebView
 
 /**
- * Created by hirezy on 2019/07/27.
+ * Created by hirezy on 2019/11/17.
  */
-interface IWebPageView {
+interface IX5WebPageView {
     /**
      * 显示webview
      */

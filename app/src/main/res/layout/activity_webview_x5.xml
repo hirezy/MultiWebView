@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="com.example.hirezy.webviewstudy.tencentx5.X5WebViewActivity">
+    tools:context="com.example.hirezy.webview.tencentx5.X5WebViewActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -44,7 +44,7 @@
                 android:layout_height="match_parent"
                 android:scrollbarSize="3dp" />
 
-            <com.example.hirezy.webviewstudy.config.WebProgress
+            <com.example.hirezy.webview.config.WebProgress
                 android:id="@+id/pb_progress"
                 android:layout_width="match_parent"
                 android:layout_height="3dp"

@@ -1,6 +1,6 @@
-package com.example.hirezy.webviewstudy.config
+package com.example.hirezy.webview.config
 import android.webkit.JavascriptInterface
-import com.example.hirezy.webviewstudy.utils.WebTools
+import com.example.hirezy.webview.utils.WebTools
 import android.text.TextUtils
 import android.content.Context
 import android.util.Log

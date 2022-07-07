@@ -5,7 +5,7 @@ android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
     defaultConfig {
-        applicationId "com.example.hirezy.webviewstudy"
+        applicationId "com.example.hirezy.webview"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 2

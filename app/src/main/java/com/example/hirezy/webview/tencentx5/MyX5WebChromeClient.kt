@@ -1,29 +1,34 @@
-package com.example.hirezy.webviewstudy.config
-import android.content.Intent
+package com.example.hirezy.webview.tencentx5
+import com.example.hirezy.webview.R
 import android.content.pm.ActivityInfo
+import android.content.Intent
 import android.app.Activity
-import androidx.annotation.RequiresApi
-import android.os.Build
+import android.graphics.Bitmap
+import com.tencent.smtt.export.external.interfaces.IX5WebChromeClient
+import android.graphics.BitmapFactory
 import android.net.Uri
-import android.view.View
-import android.webkit.*
+import android.view.*
+import com.tencent.smtt.sdk.ValueCallback
+import com.tencent.smtt.sdk.WebChromeClient
+import com.tencent.smtt.sdk.WebView
 
 /**
- * Created by hirezy on 2019/07/27.
+ * Created by hirezy on 2019/1/15.
  * - 播放网络视频配置
  * - 上传图片(兼容)
  */
-class MyWebChromeClient(private val mIWebPageView: IWebPageView) : WebChromeClient() {
+class MyX5WebChromeClient(private val mIWebPageView: IX5WebPageView) : WebChromeClient() {
     private var mUploadMessage: ValueCallback<Uri?>? = null
     private var mUploadMessageForAndroid5: ValueCallback<Array<Uri>>? = null
     private var mXProgressVideo: View? = null
+    private val mActivity: X5WebViewActivity = mIWebPageView as X5WebViewActivity
     private var mXCustomView: View? = null
-    private var mXCustomViewCallback: CustomViewCallback? = null
+    private var mXCustomViewCallback: IX5WebChromeClient.CustomViewCallback? = null
 
     /**
      * 播放网络视频时全屏会被调用的方法
      */
-    override fun onShowCustomView(view: View, callback: CustomViewCallback) {
+    override fun onShowCustomView(view: View, callback: IX5WebChromeClient.CustomViewCallback) {
         mIWebPageView.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE)
         mIWebPageView.hindWebView()
         // 如果一个视图已经存在，那么立刻终止并新建一个
@@ -59,11 +64,11 @@ class MyWebChromeClient(private val mIWebPageView: IWebPageView) : WebChromeClie
     /**
      * 视频加载时loading
      */
-    override fun getVideoLoadingProgressView(): View? {
+    override fun getVideoLoadingProgressView(): View {
         if (mXProgressVideo == null) {
             mXProgressVideo = mIWebPageView.videoLoadingProgressView
         }
-        return mXProgressVideo
+        return mXProgressVideo!!
     }
 
     override fun onProgressChanged(view: WebView, newProgress: Int) {
@@ -86,16 +91,20 @@ class MyWebChromeClient(private val mIWebPageView: IWebPageView) : WebChromeClie
 
     //扩展浏览器上传文件
     //3.0++版本
-    fun openFileChooser(uploadMsg: ValueCallback<Uri?>, acceptType: String?) {
+    fun openFileChooser(uploadMsg: ValueCallback<Uri?>?, acceptType: String?) {
         openFileChooserImpl(uploadMsg)
     }
 
     //3.0--版本
-    fun openFileChooser(uploadMsg: ValueCallback<Uri?>) {
+    fun openFileChooser(uploadMsg: ValueCallback<Uri?>?) {
         openFileChooserImpl(uploadMsg)
     }
 
-    fun openFileChooser(uploadMsg: ValueCallback<Uri?>, acceptType: String?, capture: String?) {
+    override fun openFileChooser(
+        uploadMsg: ValueCallback<Uri?>?,
+        acceptType: String,
+        capture: String
+    ) {
         openFileChooserImpl(uploadMsg)
     }
 
@@ -109,7 +118,7 @@ class MyWebChromeClient(private val mIWebPageView: IWebPageView) : WebChromeClie
         return true
     }
 
-    private fun openFileChooserImpl(uploadMsg: ValueCallback<Uri?>) {
+    private fun openFileChooserImpl(uploadMsg: ValueCallback<Uri?>?) {
         mUploadMessage = uploadMsg
         val intent = Intent(Intent.ACTION_GET_CONTENT)
         intent.addCategory(Intent.CATEGORY_OPENABLE)
@@ -159,16 +168,17 @@ class MyWebChromeClient(private val mIWebPageView: IWebPageView) : WebChromeClie
         mUploadMessageForAndroid5 = null
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
-    override fun onPermissionRequest(request: PermissionRequest) {
-        super.onPermissionRequest(request)
-        request.grant(request.resources)
+    override fun getDefaultVideoPoster(): Bitmap? {
+        return if (super.getDefaultVideoPoster() == null) {
+            BitmapFactory.decodeResource(mActivity.resources, R.drawable.by_icon_video)
+        } else {
+            super.getDefaultVideoPoster()
+        }
     }
 
     companion object {
-        @JvmField
         var FILECHOOSER_RESULTCODE = 1
-        @JvmField
         var FILECHOOSER_RESULTCODE_FOR_ANDROID_5 = 2
     }
+
 }

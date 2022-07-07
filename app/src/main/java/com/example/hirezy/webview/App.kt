@@ -1,4 +1,4 @@
-package com.example.hirezy.webviewstudy
+package com.example.hirezy.webview
 import android.app.Application
 import com.squareup.leakcanary.LeakCanary
 import com.tencent.smtt.sdk.QbSdk.PreInitCallback

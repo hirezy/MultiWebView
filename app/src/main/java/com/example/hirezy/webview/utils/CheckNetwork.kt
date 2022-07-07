@@ -1,4 +1,4 @@
-package com.example.hirezy.webviewstudy.utils
+package com.example.hirezy.webview.utils
 import android.net.ConnectivityManager
 import android.content.Context
 import java.lang.Exception

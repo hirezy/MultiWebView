@@ -1,4 +1,4 @@
-package com.example.hirezy.webviewstudy.utils
+package com.example.hirezy.webview.utils
 import android.os.Build
 import android.widget.LinearLayout
 import android.app.Activity

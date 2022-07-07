@@ -1,4 +1,4 @@
-package com.example.hirezy.webviewstudy.tencentx5
+package com.example.hirezy.webview.tencentx5
 import android.text.TextUtils
 import android.util.Log
 import com.tencent.smtt.export.external.interfaces.SslError

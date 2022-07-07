@@ -1,8 +1,8 @@
-package com.example.hirezy.webviewstudy.ui
+package com.example.hirezy.webview.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.widget.TextView
 import android.os.Bundle
-import com.example.hirezy.webviewstudy.R
+import com.example.hirezy.webview.R
 import android.util.Log
 import android.view.*
 import java.lang.Exception
