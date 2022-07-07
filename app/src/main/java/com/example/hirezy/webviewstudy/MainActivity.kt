@@ -144,13 +144,13 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             R.id.actionbar_update -> {
                 state = 0
                 loadUrl(
-                    "https://github.com/youlookwhat/download/raw/main/ByWebView.apk",
+                    "https://github.com/hirezy/MultiWebView/blob/master/art/app.apk",
                     "MulWebView.apk"
                 )
             }
             R.id.actionbar_about -> {
                 state = 0
-                loadUrl("https://github.com/youlookwhat/ByWebView", "MulWebView")
+                loadUrl("https://github.com/hirezy/MultiWebView", "MulWebView")
             }
             else -> {
             }
