@@ -20,7 +20,7 @@
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
     <application
-        android:name="com.example.hirezy.webview.App"
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -30,7 +30,7 @@
         tools:ignore="UnusedAttribute">
 
         <activity
-            android:name="com.example.hirezy.webview.MainActivity"
+            android:name=".MainActivity"
             android:exported="true"
             android:launchMode="singleTask"
             android:windowSoftInputMode="adjustPan|stateHidden">
@@ -41,14 +41,15 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.example.hirezy.webview.ui.WebViewActivity"
+            android:name=".ui.WebViewActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:theme="@style/WebViewTheme"
             tools:ignore="LockedOrientationActivity" /> <!-- 用于DeepLink，html跳到此页面  scheme_Adr: 'will://link/testid', -->
-        <activity android:name="com.example.hirezy.webview.ui.DeepLinkActivity">
+
+        <activity android:name=".ui.DeepLinkActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -60,8 +61,9 @@
                     android:scheme="will" />
             </intent-filter>
         </activity> <!-- tencent x5 页面 -->
+
         <activity
-            android:name="com.example.hirezy.webview.tencentx5.X5WebViewActivity"
+            android:name=".tencentx5.X5WebViewActivity"
             android:configChanges="orientation|screenSize|keyboardHidden"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
@@ -73,7 +75,7 @@
             android:required="false" />
 
         <activity
-            android:name="com.example.hirezy.webview.ui.MulWebViewActivity"
+            android:name=".ui.MulWebViewActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:launchMode="singleTask"
@@ -91,8 +93,9 @@
                 <data android:scheme="https" />
             </intent-filter>
         </activity>
+
         <activity
-            android:name="com.example.hirezy.webview.ui.CoordinatorWebActivity"
+            android:name=".ui.CoordinatorWebActivity"
             android:configChanges="orientation|screenSize"
             android:hardwareAccelerated="true"
             android:screenOrientation="portrait"
